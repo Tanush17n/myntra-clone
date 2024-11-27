@@ -1,18 +1,19 @@
 const fs = require('node:fs/promises');
-const path = require('path');
+const path = require('path'); // Required for creating absolute paths
 
-// Use an absolute path to the items.json file
-const itemsFilePath = path.join(__dirname, 'items.json');
-
+// Function to get stored items from the JSON file
 async function getStoredItems() {
-  const rawFileContent = await fs.readFile(itemsFilePath, { encoding: 'utf-8' });
+  // Use __dirname to create an absolute path to items.json (now located at the root of 2-actual-backend/)
+  const filePath = path.join(__dirname, '..', 'items.json'); // Adjusted to point to the root-level items.json
+  const rawFileContent = await fs.readFile(filePath, { encoding: 'utf-8' });
   const data = JSON.parse(rawFileContent);
-  const storedItems = data.items ?? [];
-  return storedItems;
+  return data.items ?? []; // Return items if available, otherwise an empty array
 }
 
+// Function to store new items to the JSON file
 function storeItems(items) {
-  return fs.writeFile(itemsFilePath, JSON.stringify({ items: items || [] }, null, 2)); // Pretty print JSON
+  const filePath = path.join(__dirname, '..', 'items.json'); // Adjusted to point to the root-level items.json
+  return fs.writeFile(filePath, JSON.stringify({ items: items || [] }));
 }
 
 exports.getStoredItems = getStoredItems;
