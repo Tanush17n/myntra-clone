@@ -8,14 +8,16 @@ const FetchItems = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // Prevent refetch if already done
     if (fetchStatus.fetchDone) return;
+
     const controller = new AbortController();
     const signal = controller.signal;
 
     dispatch(fetchStatusActions.showFetchingStarting());
 
-    const apiUrl =
-      process.env.REACT_APP_API_URL || "http://localhost:8080/items";
+    // Use environment variable or fallback to localhost
+    const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
     fetch(`${apiUrl}/items`, { signal })
       .then((res) => {
@@ -26,19 +28,22 @@ const FetchItems = () => {
       })
       .then(({ items }) => {
         dispatch(fetchStatusActions.showFetchingDone());
+        // Add fetched items to the store
         dispatch(itemActions.addInitialItems(items[0]));
       })
       .catch((error) => {
         console.error("Fetch error:", error);
-        dispatch(fetchStatusActions.showFetchingDone());
+        // Mark fetch as failed
+        dispatch(fetchStatusActions.showFetchFailed());
       });
 
     return () => {
+      // Abort the fetch on component unmount
       controller.abort();
     };
-  }, [fetchStatus, dispatch]);
+  }, [fetchStatus.fetchDone, dispatch]); // Only re-run if fetchDone or dispatch changes
 
-  return <></>;
+  return <></>; // No UI rendered by this component
 };
 
 export default FetchItems;
