@@ -14,22 +14,29 @@ const FetchItems = () => {
 
     dispatch(fetchStatusActions.showFetchingStarting());
 
-    // Use the environment variable for API URL
     const apiUrl =
-      process.env.REACT_APP_API_URL || "http://localhost:8080/items"; // Default to localhost if not set
+      process.env.REACT_APP_API_URL || "http://localhost:8080/items";
 
     fetch(`${apiUrl}/items`, { signal })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then(({ items }) => {
-        dispatch(fetchStatusActions.showFetchDone());
         dispatch(fetchStatusActions.showFetchingDone());
         dispatch(itemActions.addInitialItems(items[0]));
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        dispatch(fetchStatusActions.showFetchingDone());
       });
 
     return () => {
-      // controller.abort(); // Uncomment if you need to abort the fetch on component unmount
+      controller.abort();
     };
-  }, [fetchStatus]);
+  }, [fetchStatus, dispatch]);
 
   return <></>;
 };
