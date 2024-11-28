@@ -18,7 +18,7 @@ const FetchItems = () => {
     const apiUrl =
       process.env.REACT_APP_API_URL || "http://localhost:8080/items"; // Default to localhost if not set
 
-    fetch(apiUrl, { signal })
+    fetch(`${apiUrl}/items`, { signal })
       .then((res) => res.json())
       .then(({ items }) => {
         dispatch(fetchStatusActions.showFetchDone());
