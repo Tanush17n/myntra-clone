@@ -17,10 +17,12 @@ const FetchItems = () => {
     dispatch(fetchStatusActions.showFetchingStarting());
 
     // Use environment variable or fallback to localhost
-    const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
+    // const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
+
+    const apiUrl = "https://myntra-clone-qlbm.onrender.com/items";
 
     console.log("API URL:", apiUrl);
-    console.log("API URL2:", process.env.REACT_APP_API_URL);
+    // console.log("API URL2:", process.env.REACT_APP_API_URL);
 
     fetch(apiUrl, { signal })
       .then((res) => {
