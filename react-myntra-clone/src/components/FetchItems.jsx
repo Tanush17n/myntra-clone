@@ -21,8 +21,8 @@ const FetchItems = () => {
 
     const apiUrl = "https://myntra-clone-qlbm.onrender.com/items";
 
-    console.log("API URL:", apiUrl);
-    console.log("API URL2:", process.env.REACT_APP_API_URL);
+    // console.log("API URL:", apiUrl);
+    // console.log("API URL2:", process.env.REACT_APP_API_URL);
 
     fetch(apiUrl, { signal })
       .then((res) => {
