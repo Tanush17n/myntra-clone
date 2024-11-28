@@ -9,11 +9,28 @@ const app = express();
 app.use(bodyParser.json());
 
 // CORS Configuration
-app.use(cors({
-  origin: 'https://myntra-clone-seven-alpha.vercel.app', // Replace with your frontend URL
-  methods: ['GET', 'POST'], // Allow only specific methods
-  allowedHeaders: ['Content-Type'], // Allow specific headers
-}));
+// app.use(cors({
+//   origin: 'https://myntra-clone-seven-alpha.vercel.app', // Replace with your frontend URL
+//   methods: ['GET', 'POST'], // Allow only specific methods
+//   allowedHeaders: ['Content-Type'], // Allow specific headers
+// }));
+
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'https://myntra-clone-seven-alpha.vercel.app',
+    'https://myntra-clone-6kiek16op-tanushs-projects-825c0b1e.vercel.app'
+  ];
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 
 // Routes
 app.get('/items', async (req, res) => {
