@@ -22,7 +22,7 @@ const FetchItems = () => {
     console.log("API URL:", apiUrl);
     console.log("API URL2:", process.env.REACT_APP_API_URL);
 
-    fetch(`${apiUrl}/items`, { signal })
+    fetch(apiUrl, { signal })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
