@@ -20,6 +20,7 @@ const FetchItems = () => {
     const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
     console.log("API URL:", apiUrl);
+    console.log("API URL2:", process.env.REACT_APP_API_URL);
 
     fetch(`${apiUrl}/items`, { signal })
       .then((res) => {
